@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+
+  php:
+    build:
+      context: ./docker/php
+    ports:
+      - '8080:80'
+    volumes:
+      - ./app:/var/www/html:cached
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: lamp
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # https://hub.docker.com/_/phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8088:80'
+    environment:
+      - PMA_ARBITRARY=1
+
+volumes:
+  db_data:
