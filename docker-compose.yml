@@ -10,24 +10,39 @@ services:
     volumes:
       - ./app:/var/www/html:cached
     depends_on:
-      - db
+      - mariadb
 
-  db:
+  mariadb:
     image: mariadb:10.6
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: lamp
     volumes:
-      - db_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
 
   # https://hub.docker.com/_/phpmyadmin
   phpmyadmin:
     image: phpmyadmin
     restart: always
     ports:
-      - '8088:80'
+      - 8088:80
     environment:
       - PMA_ARBITRARY=1
 
+  # https://hub.docker.com/_/postgres
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: lamp
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8089:8080
+
 volumes:
-  db_data:
+  mariadb_data:
+  postgres_data:

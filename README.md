@@ -6,6 +6,7 @@ After start up workbench ``docker compose up -d``
    - Hello Word ``http://localhost:8080/hello-word/``
    - phpInfo ``http://localhost:8080/hello-word/phpinfo.php``
    - phpMyAdmin ``http://localhost:8088/``
+   - adminer ``http://localhost:8089/?pgsql=postgres&username=root``
 
 2. Check symfony requirements
    - ``docker compose exec php /bin/bash -c "symfony check:requirements"``
