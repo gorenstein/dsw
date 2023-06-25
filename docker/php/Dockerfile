@@ -1,23 +1,23 @@
 FROM php:8.2-apache-bookworm
 
 # common install
-RUN apt update && apt install -y --no-install-recommends \
-    apt-transport-https gnupg libicu-dev libzip-dev zip unzip \
-    git-all mc \
+RUN apt update \
+    && apt install -y --no-install-recommends \
+      apt-transport-https git-all gnupg libicu-dev libpq-dev libzip-dev mc unzip zip \
+    && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite \
     && pecl install apcu \
     && docker-php-ext-enable apcu \
-    && docker-php-ext-install opcache \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install intl \
-    && docker-php-ext-install zip
+    && docker-php-ext-install intl pdo_mysql pdo_pgsql opcache zip \
+    && apt-get purge -y --auto-remove
 
 # config
 COPY files/ /
 
 # composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
