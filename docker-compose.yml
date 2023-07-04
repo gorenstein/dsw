@@ -27,7 +27,9 @@ services:
     ports:
       - 8088:80
     environment:
-      - PMA_ARBITRARY=1
+      PMA_HOST: mariadb
+    depends_on:
+      - mariadb
 
   # https://hub.docker.com/_/postgres
   postgres:
