@@ -12,6 +12,12 @@ RUN apt update \
     && docker-php-ext-install intl pdo_mysql pdo_pgsql opcache zip \
     && apt-get purge -y --auto-remove
 
+## PHP AMQP
+RUN apt update && \
+    apt install -y librabbitmq-dev && \
+    pecl install amqp && \
+    docker-php-ext-enable amqp
+
 # config
 COPY files/ /
 
