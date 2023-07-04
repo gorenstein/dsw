@@ -6,8 +6,8 @@ RUN apt update \
       apt-transport-https git-all gnupg libicu-dev libpq-dev libzip-dev mc unzip zip \
     && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite \
-    && pecl install apcu \
-    && docker-php-ext-enable apcu \
+    && pecl install apcu redis \
+    && docker-php-ext-enable apcu redis \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl pdo_mysql pdo_pgsql opcache zip \
     && apt-get purge -y --auto-remove
