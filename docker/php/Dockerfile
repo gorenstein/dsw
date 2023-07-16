@@ -45,6 +45,13 @@ RUN apt update && \
     docker-php-ext-install xsl && \
     rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
+# gb - php ext
+RUN apt update && \
+    apt install -y libpng-dev libjpeg-dev && \
+    docker-php-ext-configure gd && \
+    docker-php-ext-install gd && \
+    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+
 
 # config
 COPY files/ /
