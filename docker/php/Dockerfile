@@ -13,7 +13,7 @@ RUN pecl install apcu && \
     docker-php-ext-enable apcu
 
 # intl - php ext
-RUN apt-get -y update && \
+RUN apt -y update && \
     apt install -y libicu-dev && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
@@ -37,6 +37,12 @@ RUN apt update && \
     apt install -y librabbitmq-dev && \
     pecl install amqp && \
     docker-php-ext-enable amqp && \
+    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+
+# xls - php ext
+RUN apt update && \
+    apt install -y libxslt-dev && \
+    docker-php-ext-install xsl && \
     rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
 
