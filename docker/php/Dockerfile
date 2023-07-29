@@ -56,12 +56,17 @@ RUN apt update && \
 # config
 COPY files/ /
 
+# nodejs
+RUN apt update && \
+    apt install -y nodejs npm && \
+    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+
 # https://hub.docker.com/_/composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # install symfony
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash \
-    && apt install -y symfony-cli
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash  && \
+    apt install -y symfony-cli
 
 # Set not-root user and group
 ARG user=appuser
