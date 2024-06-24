@@ -9,6 +9,7 @@ services:
       - '8080:80'
     volumes:
       - ./app:/var/www/html:cached
+     #- my-volume:/var/www/html/my-volume:cached
     depends_on:
       - mariadb
 
@@ -48,3 +49,11 @@ services:
 volumes:
   mariadb_data:
   postgres_data:
+
+  # https://collabnix.com/how-to-mount-external-volumes-in-docker/
+  # my-volume:
+  #  driver: local
+  #  driver_opts:
+  #    type: none
+  #    device: /path/to/folder
+  #    o: bind
