@@ -3,7 +3,7 @@ FROM php:8.3-apache-bookworm
 # common install
 RUN apt update && \
     apt install -y --no-install-recommends \
-        apt-transport-https git-all gnupg libzip-dev mc unzip zip && \
+        apt-transport-https bash-completion git-all gnupg libzip-dev mc unzip zip && \
     a2enmod rewrite && \
     docker-php-ext-install opcache zip && \
     rm -rf /var/lib/apt/lists/* &&  apt purge -y --auto-remove
