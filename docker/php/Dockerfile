@@ -12,6 +12,10 @@ RUN apt update && \
 RUN pecl install apcu && \
     docker-php-ext-enable apcu
 
+# xdebug - php ext
+RUN pecl install xdebug && \
+    docker-php-ext-enable xdebug
+
 # intl - php ext
 RUN apt -y update && \
     apt install -y libicu-dev && \
