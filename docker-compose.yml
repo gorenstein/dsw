@@ -3,6 +3,8 @@ services:
   php:
     build:
       context: ./docker/php
+    restart: unless-stopped
+    container_name: php
     ports:
       - '8080:80'
     volumes:
@@ -13,7 +15,8 @@ services:
 
   mariadb:
     image: mariadb:latest
-    restart: always
+    restart: unless-stopped
+    container_name: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: lamp
     volumes:
@@ -22,7 +25,8 @@ services:
   # https://hub.docker.com/_/phpmyadmin
   phpmyadmin:
     image: phpmyadmin
-    restart: always
+    restart: unless-stopped
+    container_name: phpmyadmin
     ports:
       - 8088:80
     environment:
@@ -33,14 +37,16 @@ services:
   # https://hub.docker.com/_/postgres
   postgres:
     image: postgres
-    restart: always
+    restart: unless-stopped
+    container_name: postgres
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: lamp
 
   adminer:
     image: adminer
-    restart: always
+    restart: unless-stopped
+    container_name: adminer
     ports:
       - 8089:8080
 
