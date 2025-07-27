@@ -68,9 +68,13 @@ RUN apt update && \
 # https://hub.docker.com/_/composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-# install symfony
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash  && \
-    apt install -y symfony-cli
+# Install Symfony CLI
+RUN mkdir -p /tmp/symfony-cli && \
+    curl -1sLf 'https://github.com/symfony-cli/symfony-cli/releases/latest/download/symfony-cli_linux_amd64.tar.gz' | tar xz -C /tmp/symfony-cli && \
+    cp /tmp/symfony-cli/symfony /usr/local/bin/symfony && \
+    chmod a+x /usr/local/bin/symfony && \
+    rm -rf /tmp/symfony-cli
+
 
 # Set not-root user and group
 ARG user=appuser
