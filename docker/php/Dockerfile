@@ -1,30 +1,17 @@
-FROM php:8.3-apache-bookworm
+FROM php:8.4-apache-bookworm
 
 # common install
 RUN apt update && \
     apt install -y --no-install-recommends \
-        apt-transport-https bash-completion git-all gnupg libzip-dev mc unzip zip && \
+        apt-transport-https bash-completion git-all gnupg libicu-dev libzip-dev mc unzip zip && \
     a2enmod rewrite && \
-    docker-php-ext-install opcache zip && \
+    docker-php-ext-install intl opcache pdo_mysql zip && \
+    docker-php-ext-configure intl && \
     rm -rf /var/lib/apt/lists/* &&  apt purge -y --auto-remove
 
 # apcu - php ext
-RUN pecl install apcu && \
-    docker-php-ext-enable apcu
-
-# xdebug - php ext
-RUN pecl install xdebug && \
-    docker-php-ext-enable xdebug
-
-# intl - php ext
-RUN apt -y update && \
-    apt install -y libicu-dev && \
-    docker-php-ext-configure intl && \
-    docker-php-ext-install intl && \
-    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
-
-# mysql - php ext
-RUN docker-php-ext-install pdo_mysql
+RUN pecl install apcu xdebug && \
+    docker-php-ext-enable apcu xdebug
 
 # pgsql - php ext
 RUN apt update && \
@@ -56,7 +43,6 @@ RUN apt update && \
     docker-php-ext-install gd && \
     rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
-
 # config
 COPY files/ /
 
@@ -74,7 +60,6 @@ RUN mkdir -p /tmp/symfony-cli && \
     cp /tmp/symfony-cli/symfony /usr/local/bin/symfony && \
     chmod a+x /usr/local/bin/symfony && \
     rm -rf /tmp/symfony-cli
-
 
 # Set not-root user and group
 ARG user=appuser
