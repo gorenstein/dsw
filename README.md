@@ -21,9 +21,8 @@ After start up workbench ``docker compose up -d``
 
 2. Run *symfony* command
    - ``symfony new webapp --webapp``
-   - or ``symfony new webapp --webapp --version="5.4"``
-   - or ``symfony new webapp --webapp --version="6.3.*"``
-   - or ``symfony new webapp --webapp --version="7.*"``
+   - or ``symfony new webapp --webapp --version="7.4"``
+   - or ``symfony new webapp --webapp --version="8.*"``
 
 3. Add *.htaccess* to project
    - ``cd webapp``
