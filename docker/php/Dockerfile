@@ -1,15 +1,15 @@
-FROM php:8.4-apache-bookworm
+FROM php:8.5-apache-trixie
 
 # common install
 RUN apt update && \
     apt install -y --no-install-recommends \
         apt-transport-https bash-completion git-all gnupg libicu-dev libzip-dev mc unzip zip && \
     a2enmod rewrite && \
-    docker-php-ext-install intl opcache pdo_mysql zip && \
+    docker-php-ext-install intl pdo_mysql zip && \
     docker-php-ext-configure intl && \
-    rm -rf /var/lib/apt/lists/* &&  apt purge -y --auto-remove
+    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
-# apcu - php ext
+# apcu xdebug - php ext
 RUN pecl install apcu xdebug && \
     docker-php-ext-enable apcu xdebug
 
@@ -23,12 +23,12 @@ RUN apt update && \
 RUN pecl install redis && \
     docker-php-ext-enable redis
 
-# AMQP - php ext
-RUN apt update && \
-    apt install -y librabbitmq-dev && \
-    pecl install amqp && \
-    docker-php-ext-enable amqp && \
-    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+# AMQP - php ext / The AMQP extension is not yet supported on PHP 8.5
+#RUN apt update && \
+#    apt install -y librabbitmq-dev && \
+#    pecl install amqp && \
+#    docker-php-ext-enable amqp && \
+#    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
 # xls - php ext
 RUN apt update && \
