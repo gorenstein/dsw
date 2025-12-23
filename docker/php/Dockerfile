@@ -1,13 +1,14 @@
 FROM php:8.5-apache-trixie
 
 # common install
-RUN apt update && \
-    apt install -y --no-install-recommends \
-        apt-transport-https bash-completion git-all gnupg libicu-dev libzip-dev mc unzip zip && \
-    a2enmod rewrite && \
-    docker-php-ext-install intl pdo_mysql zip && \
-    docker-php-ext-configure intl && \
-    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+RUN apt update \
+    && apt install -y --no-install-recommends \
+        apt-transport-https bash-completion git-all gnupg libicu-dev libzip-dev mc unzip zip \
+    && a2enmod rewrite \
+    && docker-php-ext-install intl pdo_mysql zip \
+    && docker-php-ext-configure intl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt purge -y --auto-remove
 
 # apcu xdebug - php ext
 RUN pecl install apcu xdebug \
@@ -15,10 +16,11 @@ RUN pecl install apcu xdebug \
     && pecl clear-cache
 
 # pgsql - php ext
-RUN apt update && \
-    apt install -y libpq-dev && \
-    docker-php-ext-install pdo_pgsql && \
-    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+RUN apt update \
+    && apt install -y libpq-dev \
+    && docker-php-ext-install pdo_pgsql \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt purge -y --auto-remove
 
 # redis - php ext
 RUN pecl install redis \
@@ -26,43 +28,46 @@ RUN pecl install redis \
     && pecl clear-cache
 
 # AMQP - php ext / The AMQP extension is not yet supported on PHP 8.5
-#RUN apt update && \
-#    apt install -y librabbitmq-dev && \
-#    pecl install amqp && \
-#    docker-php-ext-enable amqp && \
-#    pecl clear-cach
-#    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+#RUN apt update \
+#    && apt install -y librabbitmq-dev \
+#    && pecl install amqp \
+#    && docker-php-ext-enable amqp \
+#    && pecl clear-cach
+#    && rm -rf /var/lib/apt/lists/*
+#    && apt purge -y --auto-remove
 
 # xsl - php ext
-RUN apt update && \
-    apt install -y libxslt-dev && \
-    docker-php-ext-install xsl && \
-    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+RUN apt update \
+    && apt install -y libxslt-dev \
+    && docker-php-ext-install xsl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt purge -y --auto-remove
 
 # gd - php ext
-RUN apt update && \
-    apt install -y libpng-dev libjpeg-dev && \
-    docker-php-ext-configure gd && \
-    docker-php-ext-install gd && \
-    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+RUN apt update \
+    && apt install -y libpng-dev libjpeg-dev \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install gd \
+    && rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
 # config
 COPY files/ /
 
 # nodejs
-RUN apt update && \
-    apt install -y nodejs npm && \
-    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
+RUN apt update \
+    && apt install -y nodejs npm \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt purge -y --auto-remove
 
 # https://hub.docker.com/_/composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Install Symfony CLI
-RUN mkdir -p /tmp/symfony-cli && \
-    curl -1sLf 'https://github.com/symfony-cli/symfony-cli/releases/latest/download/symfony-cli_linux_amd64.tar.gz' | tar xz -C /tmp/symfony-cli && \
-    cp /tmp/symfony-cli/symfony /usr/local/bin/symfony && \
-    chmod a+x /usr/local/bin/symfony && \
-    rm -rf /tmp/symfony-cli
+RUN mkdir -p /tmp/symfony-cli \
+    && curl -1sLf 'https://github.com/symfony-cli/symfony-cli/releases/latest/download/symfony-cli_linux_amd64.tar.gz' | tar xz -C /tmp/symfony-cli \
+    && cp /tmp/symfony-cli/symfony /usr/local/bin/symfony \
+    && chmod a+x /usr/local/bin/symfony \
+    && rm -rf /tmp/symfony-cli
 
 # Set not-root user and group
 ARG user=appuser
