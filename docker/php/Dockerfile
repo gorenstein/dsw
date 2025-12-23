@@ -10,8 +10,9 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
 # apcu xdebug - php ext
-RUN pecl install apcu xdebug && \
-    docker-php-ext-enable apcu xdebug
+RUN pecl install apcu xdebug \
+    && docker-php-ext-enable apcu xdebug \
+    && pecl clear-cache
 
 # pgsql - php ext
 RUN apt update && \
@@ -20,14 +21,16 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
 # redis - php ext
-RUN pecl install redis && \
-    docker-php-ext-enable redis
+RUN pecl install redis \
+    && docker-php-ext-enable redis \
+    && pecl clear-cache
 
 # AMQP - php ext / The AMQP extension is not yet supported on PHP 8.5
 #RUN apt update && \
 #    apt install -y librabbitmq-dev && \
 #    pecl install amqp && \
 #    docker-php-ext-enable amqp && \
+#    pecl clear-cach
 #    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
 # xsl - php ext
