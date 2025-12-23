@@ -30,13 +30,13 @@ RUN pecl install redis && \
 #    docker-php-ext-enable amqp && \
 #    rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
-# xls - php ext
+# xsl - php ext
 RUN apt update && \
     apt install -y libxslt-dev && \
     docker-php-ext-install xsl && \
     rm -rf /var/lib/apt/lists/* && apt purge -y --auto-remove
 
-# gb - php ext
+# gd - php ext
 RUN apt update && \
     apt install -y libpng-dev libjpeg-dev && \
     docker-php-ext-configure gd && \
